@@ -11,7 +11,6 @@ class CommentController extends Controller
 {
     public function __construct(protected CommentService $commentService) {}
 
-    // GET /api/publications/{publicationId}/comments
     public function index($publicationId): JsonResponse
     {
         try {
@@ -22,7 +21,6 @@ class CommentController extends Controller
         }
     }
 
-    // POST /api/publications/{publicationId}/comments
     public function store(Request $request, $publicationId): JsonResponse
     {
         try {
@@ -42,7 +40,6 @@ class CommentController extends Controller
         }
     }
 
-    // PUT /api/comments/{id}
     public function update(Request $request, $id): JsonResponse
     {
         try {
@@ -58,7 +55,6 @@ class CommentController extends Controller
         }
     }
 
-    // DELETE /api/comments/{id}
     public function destroy(Request $request, $id): JsonResponse
     {
         try {

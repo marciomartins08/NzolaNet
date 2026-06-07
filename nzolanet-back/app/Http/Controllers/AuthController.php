@@ -8,6 +8,7 @@ use App\DTOs\RegisterDTO;
 use App\DTOs\LoginDTO;            
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,7 @@ class AuthController extends Controller
             'message' => 'Utilizador registado com sucesso!',
             'user' => $result['user'],
             'token' => $result['token']
-        ], 21); // Status 201 Created
+        ], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -38,10 +39,10 @@ class AuthController extends Controller
             'message' => 'Login efetuado com sucesso!',
             'user' => $result['user'],
             'token' => $result['token']
-        ], 200); // Status 200 OK
+        ], 200);
     }
 
-    public function logout(\Illuminate\Http\Request $request): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
     
         $request->user()->currentAccessToken()->delete();

@@ -9,21 +9,18 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-// Injeção de dependência do repositório
 public function __construct(
     protected UserRepository $userRepository
 ) {}
 
 public function register(RegisterDTO $dto)
 {
-    // Transforma o DTO num array e encripta a senha
     $user = $this->userRepository->create([
         'nome' => $dto->nome,
         'email' => $dto->email,
         'password' => Hash::make($dto->password),
     ]);
 
-    // Gera o token do Sanctum para o Angular autenticar automaticamente
     $token = $user->createToken('auth_token')->plainTextToken;
 
     return [

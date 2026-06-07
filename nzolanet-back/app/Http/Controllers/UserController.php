@@ -11,14 +11,12 @@ class UserController extends Controller
 {
     public function __construct(protected UserService $userService) {}
 
-    // GET /api/profile
     public function show(Request $request): JsonResponse
     {
         $user = $request->user()->loadCount(['publications', 'followers', 'following']);
         return response()->json($user);
     }
 
-    // PUT /api/profile
     public function update(Request $request): JsonResponse
     {
         $dto = UpdateProfileDTO::fromRequest($request);
@@ -30,7 +28,6 @@ class UserController extends Controller
         ]);
     }
 
-    // POST /api/users/{id}/follow
     public function follow(Request $request, $id): JsonResponse
     {
         try {
@@ -41,7 +38,6 @@ class UserController extends Controller
         }
     }
 
-    // DELETE /api/users/{id}/unfollow
     public function unfollow(Request $request, $id): JsonResponse
     {
         $this->userService->unfollowUser($request->user(), (int)$id);

@@ -17,13 +17,11 @@ class Publication extends Model
         'video',
     ];
 
-    // Relacionamento: A publicação pertence a um Utilizador (Autor)
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relacionamento: Uma publicação pode ter vários Comentários
     public function comments()
     {
         return $this->hasMany(Comment::class);

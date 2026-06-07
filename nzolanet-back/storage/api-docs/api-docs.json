@@ -1,0 +1,37 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "NzolaNet API",
+        "description": "Backend do Projecto Final de AW",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Servidor Local de Desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/teste": {
+            "get": {
+                "summary": "Rota de teste do Swagger",
+                "operationId": "aa575dcec58dc26f8cacc95fde8638b5",
+                "responses": {
+                    "200": {
+                        "description": "Swagger funcionando com sucesso!"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token with Bearer: Bearer {token}",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

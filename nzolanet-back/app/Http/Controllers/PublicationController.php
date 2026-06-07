@@ -11,14 +11,12 @@ class PublicationController extends Controller
 {
     public function __construct(protected PublicationService $publicationService) {}
 
-    // GET /api/publications
     public function index(): JsonResponse
     {
         $publications = $this->publicationService->getAllPublications();
         return response()->json($publications);
     }
 
-    // POST /api/publications
     public function store(Request $request): JsonResponse
     {
         $dto = PublicationDTO::fromRequest($request);
@@ -30,7 +28,6 @@ class PublicationController extends Controller
         ], 201);
     }
 
-    // PUT /api/publications/{id}
     public function update(Request $request, $id): JsonResponse
     {
         try {
@@ -46,7 +43,6 @@ class PublicationController extends Controller
         }
     }
 
-    // DELETE /api/publications/{id}
     public function destroy(Request $request, $id): JsonResponse
     {
         try {

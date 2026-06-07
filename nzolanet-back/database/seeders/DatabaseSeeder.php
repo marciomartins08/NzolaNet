@@ -9,12 +9,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Criar utilizadores com caminhos para fotos de teste
         User::create([
             'nome' => 'Marcio Martins',
             'email' => 'marcio@nzolanet.com',
             'password' => Hash::make('123456'),
-            'foto_perfil' => 'profiles/marcio.jpg', // Nome do ficheiro que estará no storage
+            'foto_perfil' => 'profiles/marcio.jpg',
             'privacidade' => 'publico'
         ]);
 

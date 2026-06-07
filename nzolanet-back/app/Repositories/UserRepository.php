@@ -17,19 +17,17 @@ public function findByEmail(string $email): ?User
 
 public function update(User $user, array $data): User
 {
-    $user->update(array_filter($data)); // array_filter ignora campos nulos
+    $user->update(array_filter($data)); 
     return $user;
 }
 
 public function follow(User $user, int $targetUserId): void
 {
-    // O attach() insere na tabela pivot 'followers' sem duplicar se usares o syncWithoutDetaching
     $user->following()->syncWithoutDetaching([$targetUserId]);
 }
 
 public function unfollow(User $user, int $targetUserId): void
 {
-    // O detach() remove o registo da tabela pivot
     $user->following()->detach($targetUserId);
 }
 }
