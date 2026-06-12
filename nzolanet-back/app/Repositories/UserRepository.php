@@ -15,6 +15,16 @@ public function findByEmail(string $email): ?User
     return User::where('email', $email)->first();
 }
 
+public function findById(int $id): ?User
+{
+    return User::find($id);
+}
+
+public function search(string $query)
+{
+    return User::where('nome', 'LIKE', "%{$query}%")->get();
+}
+
 public function update(User $user, array $data): User
 {
     $user->update(array_filter($data)); 

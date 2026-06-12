@@ -10,6 +10,20 @@ class UserService
 {
     public function __construct(protected UserRepository $userRepository) {}
 
+    public function searchUsers(string $query)
+    {
+        return $this->userRepository->search($query);
+    }
+
+    public function getUserProfile(int $id): User
+    {
+        $user = $this->userRepository->findById($id);
+        if (!$user) {
+            throw new Exception("Utilizador não encontrado.");
+        }
+        return $user;
+    }
+
     public function updateProfile(User $user, UpdateProfileDTO $dto): User
     {
         return $this->userRepository->update($user, [

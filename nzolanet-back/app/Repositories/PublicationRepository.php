@@ -16,6 +16,11 @@ class PublicationRepository
         return Publication::find($id);
     }
 
+    public function getByUserId(int $userId): Collection
+    {
+        return Publication::with(['user', 'comments'])->where('user_id', $userId)->latest()->get();
+    }
+
     public function create(array $data): Publication
     {
         return Publication::create($data);

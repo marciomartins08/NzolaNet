@@ -11,10 +11,34 @@ class UserController extends Controller
 {
     public function __construct(protected UserService $userService) {}
 
+    public function index(Request $request): JsonResponse
+    {
+        $query = $request->query('search', '');
+        $users = $this->userService->searchUsers($query);
+        $currentUser = $request->user();
+        foreach ($users as $user) {
+            $user->is_following = $currentUser ? $currentUser->following()->where('users.id', $user->id)->exists() : false;
+        }
+        return response()->json($users);
+    }
+
     public function show(Request $request): JsonResponse
     {
         $user = $request->user()->loadCount(['publications', 'followers', 'following']);
         return response()->json($user);
+    }
+
+    public function showUser(Request $request, $id): JsonResponse
+    {
+        try {
+            $user = $this->userService->getUserProfile((int)$id);
+            $user->loadCount(['publications', 'followers', 'following']);
+            $currentUser = $request->user();
+            $user->is_following = $currentUser ? $currentUser->following()->where('users.id', $user->id)->exists() : false;
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 
     public function update(Request $request): JsonResponse

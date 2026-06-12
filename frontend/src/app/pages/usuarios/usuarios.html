@@ -1,0 +1,77 @@
+<section class="max-w-4xl mx-auto px-4 py-8">
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Pesquisar Utilizadores</h2>
+    <div class="relative flex gap-2">
+      <div class="relative flex-grow">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </span>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="search()"
+          placeholder="Procure por nome..."
+          class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 text-gray-900"
+        />
+      </div>
+      <button
+        (click)="search()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+      >
+        Pesquisar
+      </button>
+    </div>
+  </div>
+  @if(loading()){
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+    </div>
+  } @else{
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (user of users(); track user.id) {
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition-shadow">
+          
+          <div class="flex items-center gap-4">
+            <img
+              [src]="user.foto_perfil || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+              alt="Avatar"
+              class="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
+            />
+            <div class="min-w-0">
+              <h3 class="font-bold text-gray-800 text-lg truncate">{{ user.nome }}</h3>
+              <p class="text-gray-500 text-sm truncate">{{ user.email }}</p>
+            </div>
+          </div>
+
+          <div class="flex gap-2 w-full sm:w-auto justify-end sm:justify-start">
+            <button
+              (click)="verPerfil(user.id)"
+              class="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors flex-1 sm:flex-none text-center"
+            >
+              Ver Perfil
+            </button>
+            
+            <button
+              (click)="toggleFollow(user)"
+              [class]="user.is_following 
+                ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
+                : 'bg-blue-600 text-white hover:bg-blue-700'"
+              class="px-4 py-2 text-sm font-semibold rounded-xl transition-colors flex-1 sm:flex-none text-center"
+            >
+              {{ user.is_following ? 'Seguindo' : 'Seguir' }}
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <p class="text-gray-500 text-sm">Nenhum utilizador encontrado.</p>
+      }
+    </div>
+  }
+  
+
+  
+  
+</section>

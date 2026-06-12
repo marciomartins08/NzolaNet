@@ -11,6 +11,8 @@ use App\Http\Controllers\UploadController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/publications', [PublicationController::class, 'index']);
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -18,6 +20,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/profile', [UserController::class, 'show']);
     Route::put('/profile', [UserController::class, 'update']);
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'showUser']);
+    Route::get('/users/{id}/publications', [PublicationController::class, 'userPublications']);
     Route::post('/users/{id}/follow', [UserController::class, 'follow']);
     Route::delete('/users/{id}/unfollow', [UserController::class, 'unfollow']);
 
@@ -34,6 +39,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/upload', [UploadController::class, 'upload']);
 
-    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
-    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 });

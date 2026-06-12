@@ -17,6 +17,12 @@ class PublicationController extends Controller
         return response()->json($publications);
     }
 
+    public function userPublications(Request $request, $id): JsonResponse
+    {
+        $publications = $this->publicationService->getUserPublications((int)$id);
+        return response()->json($publications);
+    }
+
     public function store(Request $request): JsonResponse
     {
         $dto = PublicationDTO::fromRequest($request);

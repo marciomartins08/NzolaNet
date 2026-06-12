@@ -1,0 +1,46 @@
+<aside class="bg-gray-100 rounded-xl shadow-sm border border-gray-200 p-4 mt-4 gap-2 overflow-auto max-h-96">
+    <div class="mb-4 flex gap-2">
+        <input
+            type="text"
+            [(ngModel)]="novoComentarioTexto"
+            placeholder="Escreva um comentário..."
+            class="flex-grow border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        />
+        <button
+            (click)="enviarComentario()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors"
+        >
+            Comentar
+        </button>
+    </div>
+
+    @for(comentario of comentarios; track comentario.id) {
+    <div class="pl-4 pr-4 py-2 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col gap-2 mb-4">
+        <div class="flex flex-col gap-2 p-2">
+            <div class="flex justify-between items-start">
+                <div class="flex gap-2 items-center">
+                    <p class="font-bold text-gray-600 text-sm">{{ comentario.userName }}</p>
+                    <p class="text-gray-400 text-xs">{{ comentario.userEmail }}</p>
+                </div>
+                @if(isOwnComment(comentario)){
+                    <button
+                    (click)="apagarComentario(comentario.id)"
+                    class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor">
+                            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v500h400v-500ZM360-240h80v-380h-80v380Zm160 0h80v-380h-80v380ZM280-720v500-500Z"/>
+                        </svg>
+                    </button>
+                }
+                
+            </div>
+            <p class="text-gray-500 text-xs">{{ calcularTempoPublicacao(comentario.date) }}</p>
+            <div class="content mt-1 text-sm text-gray-700">
+                <p>{{ comentario.text }}</p>
+            </div>
+        </div>
+    </div>    
+    } @empty {
+        <p> Sem comentarios </p>
+    }
+</aside>

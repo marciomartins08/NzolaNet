@@ -1,0 +1,49 @@
+<aside class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex gap-1">
+    <div>
+        <img class="w-10 h-10 rounded-full" src="favicon.ico" alt="">
+    </div>
+    <div class="flex flex-col gap-4 w-full ">
+
+        <textarea class="focus:outline-none focus:ring-0 focus:border-transparent w-full h-full resize-none"  name="" id=""  placeholder="O que está acontecendo?" (input)="onText($event)" [value]="text"></textarea>
+        @if(this.imagePreview || this.videoPreview){
+            <div class="flex bg-gray-200 rounded-lg p-4 gap-4">    
+                @if(this.imagePreview){
+                    <div class="relative">
+                    <img  [src]="imagePreview" alt="Pré-visualização da imagem" class="w-64 h-auto rounded-lg">
+                    <button class="absolute top-2 right-2 bg-gray-300 rounded-full p-1" (click)="removeImage()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                    </button>
+                    </div>
+                }
+                @if(this.videoPreview){
+                    <div class="relative">
+                    <video class="w-64 h-64"  [src]="videoPreview" controls class="w-64 h-auto rounded-lg"></video>
+                    <button class="absolute top-2 right-2 bg-gray-300 rounded-full p-1" (click)="removeVideo()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                    </button>
+                    </div>
+                }
+            </div>
+        }
+                <div class="flex justify-between border-t-1 border-gray-200 pt-2">
+            <div class="flex gap-2 items-center ">
+                <button class="focus:bg-blue-200 focus:text-blue-600 font-medium text-gray-600 rounded-xl p-2">
+                    <input #imagemInput type="file" accept="image/*" class="hidden focus:ring-2 focus:ring-blue-500" id="file-input" name="image-upload" (change)="onImageChange($event)" />
+                    <label for="file-input" >
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z"/></svg>
+                    </label>
+                </button>
+                <button class="focus:bg-blue-200 focus:text-blue-600 font-medium text-gray-600 rounded-xl p-2">
+                    <input #videoInput type="file" accept="video/*"  class="hidden focus:ring-2 focus:ring-blue-500" id="video-input" name="video-upload" (change)="onVideoChange($event)"/>
+                    <label for="video-input" >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M200-320h400L462-500l-92 120-62-80-108 140Zm-40 160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T64<PASSWORD>"/></svg>
+                    </label>
+                </button>
+            </div>
+            <div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl text-xl" (click)="submitPost()">Publicar</button>
+            </div>
+        </div>
+    </div>
+    
+</aside>

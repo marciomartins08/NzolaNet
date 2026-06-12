@@ -17,6 +17,11 @@ class PublicationService
         return $this->publicationRepository->getAll();
     }
 
+    public function getUserPublications(int $userId): Collection
+    {
+        return $this->publicationRepository->getByUserId($userId);
+    }
+
     public function createPublication(User $user, PublicationDTO $dto): Publication
     {
         return $this->publicationRepository->create([

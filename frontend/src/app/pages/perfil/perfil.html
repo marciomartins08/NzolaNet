@@ -1,0 +1,168 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200">
+
+    <div
+        class="h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-t-xl">
+    </div>
+
+    <div class="px-6 pb-6">
+
+        <div class="flex flex-col items-center -mt-16">
+
+            <div class="relative">
+
+                @if(profile().avatar){
+
+                    <img
+                        [src]="profile().avatar"
+                        [alt]="profile().name"
+                        class="w-32 h-32 rounded-full border-4 border-white object-cover">
+
+                } @else {
+
+                    <div
+                        class="w-32 h-32 rounded-full border-4 border-white bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+
+                        {{ profile().name.charAt(0).toUpperCase() }}
+
+                    </div>
+                }
+
+                @if(profile().isOwnProfile){
+
+                    <input
+                        #avatarInput
+                        type="file"
+                        accept="image/*"
+                        class="hidden"
+                        (change)="onAvatarChange($event)">
+
+                    <button
+                        type="button"
+                        (click)="avatarInput.click()"
+                        class="absolute bottom-0 right-0 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+
+                        📷
+
+                    </button>
+                }
+
+            </div>
+
+            @if(showAvatarInput()){
+
+                <div class="mt-4 w-full max-w-md flex flex-col gap-3">
+
+                    @if(avatarPreview()){
+
+                        <img
+                            [src]="avatarPreview()"
+                            alt="Preview"
+                            class="w-32 h-32 rounded-full object-cover self-center">
+
+                    }
+
+                    <div class="flex gap-2">
+
+                        <button
+                            (click)="saveAvatar()"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+
+                            Salvar
+
+                        </button>
+
+                        <button
+                            (click)="this.showAvatarInput.set(false)"
+                            class="px-4 py-2 bg-gray-200 rounded-lg">
+
+                            Cancelar
+
+                        </button>
+
+                    </div>
+
+                </div>
+            }
+
+            <h2 class="mt-4 text-2xl font-bold text-gray-900">
+                {{ profile().name }}
+            </h2>
+
+            <p class="mt-2 text-gray-600 text-center max-w-md">
+                {{ profile().bio }}
+            </p>
+
+            <div class="flex gap-4 sm:gap-8 mt-6 justify-center w-full flex-wrap">
+
+                <div class="text-center">
+                    <p class="text-2xl font-bold">{{ profile().posts }}</p>
+                    <p class="text-sm text-gray-600">Publicações</p>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-2xl font-bold">{{ profile().followers }}</p>
+                    <p class="text-sm text-gray-600">Seguidores</p>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-2xl font-bold">{{ profile().following }}</p>
+                    <p class="text-sm text-gray-600">Seguindo</p>
+                </div>
+
+            </div>
+            @if(editing()){
+                <div class="mt-4 w-full max-w-md px-4 flex flex-col gap-3">
+                    <input type="text" [(ngModel)]="editNome" placeholder="Nome" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white w-full" />
+                    <textarea [(ngModel)]="editBio" placeholder="Bio" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white w-full" rows="2"></textarea>
+                    <div class="flex gap-2 justify-center">
+                        <button (click)="saveProfile()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors flex-1 sm:flex-none text-center">Salvar</button>
+                        <button (click)="toggleEdit()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition-colors flex-1 sm:flex-none text-center">Cancelar</button>
+                    </div>
+                </div>
+
+            } @else {
+                <div class="mt-6 flex gap-3">
+                    @if(profile().isOwnProfile){
+                        <button
+                            (click)="toggleEdit()"
+                            class="px-6 py-2 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            Editar Perfil
+                        </button>
+                    } @else {
+                        <button
+                            (click)="onFollow()"
+                            class="px-6 py-2 rounded-lg font-semibold"
+                            [class]="profile().isFollowing
+                                ? 'bg-gray-100 text-gray-700'
+                                : 'bg-blue-600 text-white'">
+                            {{ profile().isFollowing ? 'Seguindo' : 'Seguir' }}
+                        </button>
+                    }
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Lista de Publicações do Utilizador -->
+<section class="w-full max-w-4xl mx-auto mt-8 px-4">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold text-gray-800">Publicações</h3>
+    </div>
+    @if(loading()){
+        <div class="flex justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+    } @else {
+        @for (item of userPublications(); track item.id) {
+            <app-post [dataPost]="item" (deleted)="loadUserAndPublications(profile().id || null)"></app-post>
+        } @empty {
+            <div class="text-center py-12 bg-white rounded-xl border border-gray-200 text-gray-500">
+                Nenhuma publicação ainda.
+            </div>
+        }
+    }
+</section>

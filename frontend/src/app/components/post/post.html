@@ -1,0 +1,96 @@
+<aside>
+    <div class="flex flex-col gap-4 mt-4 min-w-0">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex gap-1">
+            <div>
+                <img class="w-10 h-10 rounded-full" [src]="this.dataPost().userImg" alt=""/>
+            </div>
+            <div class="flex flex-col gap-4 w-full ">
+                <div class="flex justify-between items-start">
+                    <div class="flex flex-col">
+                        <div class="flex gap-2 items-center ">
+                            <p class="font-bold text-gray-600">{{this.dataPost().userName}}</p>
+                            <p class="text-gray-500">{{this.dataPost().userEmail}}</p>
+                        </div>
+                        <p class="text-gray-500">{{this.calcularTempoPublicacao(this.dataPost().date)}}</p>
+                    </div>
+                    @if(isOwnPost() && !editing){
+                        <div class="flex gap-2">
+                            <button (click)="startEdit()" class="text-blue-500 hover:text-blue-700 p-1 hover:bg-blue-50 rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                    <path d="M200-200h57l359-359-57-57-359 359v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                                </svg>
+                            </button>
+                            <button (click)="deletePost()" class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v500h400v-500ZM360-240h80v-380h-80v380Zm160 0h80v-380h-80v380ZM280-720v500-500Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    }
+                    
+                </div>
+                <div class="content flex flex-col gap-4">
+                     @if (!editing()) {
+                        <p>{{ dataPost().text }}</p>
+                    } @else {  <!-- Repara no espaço antes e depois do @else -->
+                        <div class="flex flex-col gap-2">
+                            <textarea [(ngModel)]="editText" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" rows="2"></textarea>
+                            <div class="flex gap-2 justify-end">
+                                <button (click)="saveEdit()" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors">Salvar</button>
+                                <button (click)="editing.set(false)" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-lg text-xs font-semibold transition-colors">Cancelar</button>
+                            </div>
+                        </div>
+                    }
+                    
+                    
+                    <div class="flex w-full gap-4 justify-center">
+                        @if (this.dataPost().image) {
+                            <img
+                                [src]="this.dataPost().image"
+                                alt="Imagem da publicação"
+                                class="h-auto rounded-lg mt-4"
+                                [class.w-full]="!this.dataPost().video"
+                                [class.w-1/2]="this.dataPost().video"
+                            />
+                        }
+
+                        @if (this.dataPost().video) {
+                            <video
+                                [src]="this.dataPost().video"
+                                controls
+                                class="h-auto rounded-lg mt-4"
+                                [class.w-full]="!this.dataPost().image"
+                                [class.w-1/2]="this.dataPost().image"
+                            ></video>
+                        }
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 border-t-1 border-gray-200 pt-2">
+                    <button class=" flex items-center gap-1 rounded-xl p-2 text-gray-600 font-medium focus:text-red-600">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 -960 960 960"
+                            width="28"
+                            height="28"
+                            fill="currentColor"
+                        >
+                            <path d="M480-120 347-240q-56-51-93-87.5T194-394q-23-30-33.5-55.5T150-500q0-75 50-125t125-50q44 0 84.5 19.5T480-600q30-36 70.5-55.5T635-675q75 0 125 50t50 125q0 25-10.5 50.5T766-394q-23 30-60 66.5T613-240L480-120Z"/>
+                        </svg>
+                        <div> {{this.dataPost().likes || 0}}</div>
+                    </button>
+                    <button class="focus:bg-blue-200 focus:text-blue-600 font-medium text-gray-600 rounded-xl p-2" (click)="this.SetverComentarios()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v480Z"/></svg>
+                    </button>
+                   
+                </div>
+                    @if(verComentarios()){
+                        <app-comentarios [postId]="this.dataPost().id"></app-comentarios>
+                        
+                    }
+                 
+            </div>
+            
+        </div>
+    
+    </div>
+</aside>
