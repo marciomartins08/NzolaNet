@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BazeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\CommentController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\UploadController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/publications', [PublicationController::class, 'index']);
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 Route::get('/comments/count', [CommentController::class, 'contar']);
@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/publications/{id}', [PublicationController::class, 'update']);
     Route::delete('/publications/{id}', [PublicationController::class, 'destroy']);
     Route::delete('/publicationsany/{id}', [PublicationController::class, 'deletar']);
+    Route::get('/publications', [PublicationController::class, 'index']);
 
     Route::get('/publications/{publicationId}/comments', [CommentController::class, 'index']);
     Route::post('/publications/{publicationId}/comments', [CommentController::class, 'store']);
@@ -45,6 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/comments/{id}', [CommentController::class, 'getComment']);
     Route::get('/comments', [CommentController::class, 'listar']);
     Route::delete('/comments/admin/{id}', [CommentController::class, 'deletar']);
+
+    Route::post('/publications/{id}/like',[BazeController::class, 'store']);
+    Route::delete('/publications/{id}/remove',[BazeController::class, 'destroy']);
+    Route::get('/likes',[BazeController::class, 'index']);
 
 
     Route::post('/upload', [UploadController::class, 'upload']);

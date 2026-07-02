@@ -12,9 +12,9 @@ class PublicationService
 {
     public function __construct(protected PublicationRepository $publicationRepository) {}
 
-    public function getAllPublications(): Collection
+    public function getAllPublications(User $user): Collection
     {
-        return $this->publicationRepository->getAll();
+        return $this->publicationRepository->getAll($user);
     }
 
     public function getUserPublications(int $userId): Collection

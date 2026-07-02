@@ -11,9 +11,9 @@ class PublicationController extends Controller
 {
     public function __construct(protected PublicationService $publicationService) {}
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $publications = $this->publicationService->getAllPublications();
+        $publications = $this->publicationService->getAllPublications($request->user());
         return response()->json($publications);
     }
 

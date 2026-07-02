@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')->withTimestamps();
     }
+
+    public function bazes()
+    {
+        return $this->hasMany(Baze::class);
+    }
 }
