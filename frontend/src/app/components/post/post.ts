@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Post {
   private apiService = inject(ApiService);
-  
+
   dataPost = input.required<{
     id: number;
     userId?: number;
@@ -60,14 +60,14 @@ export class Post {
     this.apiService.updatePublication(this.dataPost().id, { texto: this.editText }).subscribe({
       next: () => {
         this.editing.set(false);
-        this.deleted.emit(); // trigger reload in parent
+        this.deleted.emit();
       },
       error: (err) => {
         alert(err.error?.error || 'Erro ao editar publicação.');
       }
     });
   }
-  
+
   SetverComentarios(){
     this.verComentarios.update(v => !v);
   }
@@ -78,7 +78,7 @@ export class Post {
     const minutos = Math.floor(segundos / 60);
     const horas = Math.floor(minutos / 60);
     const dias = Math.floor(horas / 24);
-    
+
     if (dias > 0) {
       return `Há ${dias} dia${dias > 1 ? 's' : ''}`;
     } else if (horas > 0) {

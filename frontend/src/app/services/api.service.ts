@@ -77,9 +77,16 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/publications/${id}`);
   }
 
+  deletePublicationAny(id: number) : Observable<any>{
+    return this.http.delete(`${this.baseUrl}/publicationsany/${id}`)
+  }
+
   // Comments
   getComments(publicationId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/publications/${publicationId}/comments`);
+  }
+  getCommentsAll(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/comments`);
   }
 
   addComment(publicationId: number, text: string): Observable<any> {
@@ -94,10 +101,41 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/comments/${id}`);
   }
 
+  deleteCommentAdmin(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/comments/admin/${id}`);
+  }
+
+  getComment(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/comments/${id}`);
+  }
+
+  countComments() : Observable<any>{
+    return this.http.get(`${this.baseUrl}/comments/count`);
+  }
+
+  countUsers() : Observable<any>{
+    return this.http.get(`${this.baseUrl}/users/count`);
+  }
+
+  countPublications() : Observable<any>{
+    return this.http.get(`${this.baseUrl}/publications/count`);
+  }
+
   // File Upload
   uploadFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('media', file);
     return this.http.post(`${this.baseUrl}/upload`, formData);
+  }
+
+  getUserWithCountPublications() : Observable<any>{
+    return this.http.get(`${this.baseUrl}/users/most`);
+  }
+  getUsers() : Observable<any>{
+    return this.http.get(`${this.baseUrl}/users/show`);
+  }
+
+  deleteUser(userId: number) : Observable<any>{
+    return this.http.delete(`${this.baseUrl}/users/${userId}`);
   }
 }

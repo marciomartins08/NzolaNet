@@ -1,0 +1,40 @@
+<div class="space-y-4">
+  <div>
+    <h2 class="text-xl font-bold text-gray-900">Gestão de Publicações</h2>
+    <p class="text-sm text-gray-500 mt-1">{{countPublication()}} publicações na plataforma</p>
+  </div>
+  <div class="space-y-3">
+    @for(post of publicacoes(); track post.id){
+      <div class="bg-white rounded-xl border shadow-sm p-4 border-gray-200">
+        <div class="flex items-start gap-3">
+           <img
+                src={{post.userImg}}
+                alt={{post.nome}}
+                class="w-6 h-6 rounded-full object-cover"
+              />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="text-sm font-semibold text-gray-900">{{post.userName}}</span>
+                  <span class="text-xs text-gray-400 ml-2">{{post.data}}</span>
+                </div>
+                <button (click)="deletePublication(post.id)" class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v500h400v-500ZM360-240h80v-380h-80v380Zm160 0h80v-380h-80v380ZM280-720v500-500Z"/>
+                    </svg>
+                </button>
+              </div>
+              <p class="text-sm text-gray-700 mt-1 line-clamp-2">{{post.texto}}</p>
+              @if(post.imagem){
+                <img src={{post.imagem}} alt="" class="mt-2 rounded-lg h-24 w-auto object-cover" />
+              }
+              <div class="flex items-center gap-4 mt-2">
+                <span class="text-xs text-gray-400">{{post.bazes}} bazes</span>
+                <span class="text-xs text-gray-400">{{post.comments}} comentários</span>
+              </div>
+            </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

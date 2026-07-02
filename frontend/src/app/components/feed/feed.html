@@ -5,9 +5,10 @@
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
     }
-   
+
+
     @if(!loading()){
-        
+
         <div >
             @for (item of publications(); track item.id) {
                 <app-post [dataPost]="item" (deleted)="carregarPublicacoes()"></app-post>

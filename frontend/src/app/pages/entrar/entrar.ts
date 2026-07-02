@@ -1,34 +1,46 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-entrar',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, RouterLink],
   templateUrl: './entrar.html',
   styleUrl: './entrar.css',
 })
+
 export class Entrar {
-  private apiService = inject(ApiService);
-  private router = inject(Router);
 
   email = '';
   password = '';
+  showPassword = false;
+  loading = false;
+  error = ''
 
-  submeterLogin(event: Event) {
+  constructor(
+    private apiService: ApiService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
+
+  onLogin(event: any) {
     event.preventDefault();
-    this.apiService.login({
-      email: this.email,
-      password: this.password,
-    }).subscribe({
+    const user = { email: this.email, password: this.password };
+    this.loading = true;
+    this.apiService.login(user).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
+        this.loading = false;
         this.router.navigate(['/feed']);
       },
       error: (err) => {
-        alert(err.error?.message || "Email ou senha incorretos.");
+        this.loading = false;
+        this.cdr.detectChanges();
+        this.error = "Email ou senha incorretos";
       }
     });
   }
