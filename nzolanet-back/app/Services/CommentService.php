@@ -27,6 +27,22 @@ class CommentService
         return $this->commentRepository->getByPublicationId($publicationId);
     }
 
+    public function getCommentById(int $id, User $user) : Comment
+    {
+        return $this->commentRepository->findById($id);
+
+    }
+
+    public function getAllComments() : Collection
+    {
+        return $this->commentRepository->getAll();
+    }
+
+    public function getCount()
+    {
+        return $this->commentRepository->count();
+    }
+
     public function createComment(User $user, int $publicationId, CommentDTO $dto): Comment
     {
         $publication = $this->publicationRepository->findById($publicationId);
@@ -71,6 +87,16 @@ class CommentService
             throw new Exception("Não tens permissão para apagar este comentário.");
         }
 
+        $this->commentRepository->delete($comment);
+    }
+
+    public function deleteCommentAdmin(int $id): void
+    {
+        $comment = $this->commentRepository->findById($id);
+
+        if (!$comment) {
+            throw new Exception("Comentário não encontrado.");
+        }
         $this->commentRepository->delete($comment);
     }
 }

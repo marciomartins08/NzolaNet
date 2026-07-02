@@ -12,14 +12,19 @@ class PublicationService
 {
     public function __construct(protected PublicationRepository $publicationRepository) {}
 
-    public function getAllPublications(): Collection
+    public function getAllPublications(User $user): Collection
     {
-        return $this->publicationRepository->getAll();
+        return $this->publicationRepository->getAll($user);
     }
 
     public function getUserPublications(int $userId): Collection
     {
         return $this->publicationRepository->getByUserId($userId);
+    }
+
+    public function countPublications() : int
+    {
+        return $this->publicationRepository->count();
     }
 
     public function createPublication(User $user, PublicationDTO $dto): Publication
@@ -63,6 +68,16 @@ class PublicationService
             throw new Exception("Não tens permissão para apagar esta publicação.");
         }
 
+        $this->publicationRepository->delete($publication);
+    }
+
+    public function deletePublicationAny(int $id): void
+    {
+        $publication = $this->publicationRepository->findById($id);
+
+        if (!$publication) {
+            throw new Exception("Publicação não encontrada.");
+        }
         $this->publicationRepository->delete($publication);
     }
 }

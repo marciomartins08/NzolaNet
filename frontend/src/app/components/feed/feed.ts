@@ -13,7 +13,7 @@ import { forkJoin, of } from 'rxjs';
 })
 export class Feed implements OnInit {
   private apiService = inject(ApiService);
-  
+
   publications = signal<any[]>([]);
   loading = signal(false);
 
@@ -56,7 +56,9 @@ export class Feed implements OnInit {
       userEmail: pub.user?.email || '',
       userImg: pub.user?.foto_perfil || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
       date: pub.created_at ? new Date(pub.created_at) : new Date(),
-      likes: 0
+      bazes: pub.bazes_count,
+      comments: pub.comments_count,
+      likedByMe: pub.likedByMe
     };
   }
 
@@ -101,5 +103,19 @@ export class Feed implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  atualizarLike(event: { postId: number; liked: boolean }) {
+    this.publications.update(posts =>
+      posts.map(post =>
+        post.id === event.postId
+          ? {
+              ...post,
+              likedByMe: event.liked,
+              bazes: event.liked ? post.bazes + 1 : post.bazes - 1
+            }
+          : post
+      )
+    );
   }
 }

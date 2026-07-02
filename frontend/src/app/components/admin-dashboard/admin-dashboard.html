@@ -1,0 +1,77 @@
+<div class="space-y-6">
+  <div>
+    <h2 class="text-xl font-bold text-gray-900">Visão Geral</h2>
+    <p class="text-sm text-gray-500 mt-1">Estatísticas gerais da plataforma NzolaNet</p>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-blue-500 text-white rounded-lg p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900">{{totUsers() }}</p>
+    <p class="text-sm text-gray-500">Utilizadores Totais</p>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-purple-500 text-white rounded-lg p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+          <path d="M10 9H8" />
+          <path d="M16 13H8" />
+          <path d="M16 17H8" />
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900">{{ totPublicacoes() }}</p>
+    <p class="text-sm text-gray-500">Publicações</p>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-orange-500 text-white rounded-lg p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900">{{ totComentarios() }}</p>
+    <p class="text-sm text-gray-500">Comentários</p>
+  </div>
+</div>
+
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+    <div class="flex items-center gap-2 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+        <polyline points="16 7 22 7 22 13"></polyline>
+      </svg>
+      <h3 class="font-semibold text-gray-900">Utilizadores Mais Activos</h3>
+    </div>
+    <div class="space-y-2">
+      @for(user of users(); track user.id){
+        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+          <span class="text-sm font-bold text-gray-400 w-5">{{user.id}}</span>
+                <img
+          src={{user.foto}}
+          alt={{user.nome}}
+          class="w-6 h-6 rounded-full object-cover"
+        />
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">{{user.nome}}</p>
+          <p class="text-xs text-gray-400">{{user.count}} publicações · {{user.followers}} seguidores</p>
+        </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

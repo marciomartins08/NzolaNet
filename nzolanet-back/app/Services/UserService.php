@@ -5,10 +5,27 @@ use App\DTOs\UpdateProfileDTO;
 use App\Repositories\UserRepository;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
     public function __construct(protected UserRepository $userRepository) {}
+
+    public function getUsersWithPublications() : Collection
+    {
+        return $this->userRepository->mostPublications();
+    }
+
+    public function deleteUser(int $id) : void
+    {
+        $user = $this->userRepository->findById($id);
+        $this->userRepository->delete($user);
+    }
+
+    public function getUsers() : Collection
+    {
+        return $this->userRepository->countPublicationsAndFollowers();
+    }
 
     public function searchUsers(string $query)
     {
@@ -22,6 +39,11 @@ class UserService
             throw new Exception("Utilizador não encontrado.");
         }
         return $user;
+    }
+
+    public function countUsers() : int
+    {
+        return $this->userRepository->count();
     }
 
     public function updateProfile(User $user, UpdateProfileDTO $dto): User

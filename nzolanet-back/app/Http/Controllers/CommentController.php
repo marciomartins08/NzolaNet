@@ -21,6 +21,17 @@ class CommentController extends Controller
         }
     }
 
+    public function getComment(Request $request, int $id) : JsonResponse{
+        try {
+            $comment = $this->commentService->getCommentById((int) $id, $request->user());
+            return response()->json([
+                'comment' => $comment,
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 403);
+        }
+    }
+
     public function store(Request $request, $publicationId): JsonResponse
     {
         try {
@@ -55,6 +66,12 @@ class CommentController extends Controller
         }
     }
 
+    public function listar() : JsonResponse
+    {
+        $arr = $this->commentService->getAllComments();
+        return response()->json($arr,200);
+    }
+
     public function destroy(Request $request, $id): JsonResponse
     {
         try {
@@ -63,5 +80,24 @@ class CommentController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 403);
         }
+    }
+
+    public function deletar(Request $request, $id): JsonResponse
+    {
+        try {
+            $this->commentService->deleteCommentAdmin((int) $id);
+            return response()->json(['message' => 'Comentário apagado com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 403);
+        }
+    }
+
+    public function contar() : JsonResponse
+    {
+        $contador = $this->commentService->getCount();
+
+        return response()->json(
+            ['count' => $contador]
+        , 200);
     }
 }

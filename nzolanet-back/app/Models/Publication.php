@@ -26,4 +26,9 @@ class Publication extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function bazes()
+    {
+        return $this->hasMany(Baze::class);
+    }
 }

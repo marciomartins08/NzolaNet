@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal } from '@angular/core';
+import { Component, input, output, inject, signal, Output, EventEmitter } from '@angular/core';
 import { Comentarios } from '../comentarios/comentarios';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Post {
   private apiService = inject(ApiService);
-  
+
   dataPost = input.required<{
     id: number;
     userId?: number;
@@ -23,7 +23,8 @@ export class Post {
     userEmail: string;
     userImg: string;
     date: Date;
-    likes: number;
+    bazes: number;
+    likedByMe: boolean;
   }>();
 
   deleted = output<void>();
@@ -60,14 +61,14 @@ export class Post {
     this.apiService.updatePublication(this.dataPost().id, { texto: this.editText }).subscribe({
       next: () => {
         this.editing.set(false);
-        this.deleted.emit(); // trigger reload in parent
+        this.deleted.emit();
       },
       error: (err) => {
         alert(err.error?.error || 'Erro ao editar publicação.');
       }
     });
   }
-  
+
   SetverComentarios(){
     this.verComentarios.update(v => !v);
   }
@@ -78,7 +79,7 @@ export class Post {
     const minutos = Math.floor(segundos / 60);
     const horas = Math.floor(minutos / 60);
     const dias = Math.floor(horas / 24);
-    
+
     if (dias > 0) {
       return `Há ${dias} dia${dias > 1 ? 's' : ''}`;
     } else if (horas > 0) {
@@ -88,6 +89,24 @@ export class Post {
     } else {
       return `Há ${segundos} segundo${segundos > 1 ? 's' : ''}`;
     }
+  }
+
+  @Output() liked = new EventEmitter<{ postId: number; liked: boolean }>();
+
+  darLike(postId: number) {
+    this.apiService.darLike(postId).subscribe({
+      next: () => {
+        this.liked.emit({ postId, liked: true });
+      }
+    });
+  }
+
+  tirarLike(postId: number) {
+    this.apiService.removerLike(postId).subscribe({
+      next: () => {
+        this.liked.emit({ postId, liked: false });
+      }
+    });
   }
 
 }

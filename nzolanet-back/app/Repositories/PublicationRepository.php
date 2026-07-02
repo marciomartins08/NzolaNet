@@ -2,13 +2,30 @@
 namespace App\Repositories;
 
 use App\Models\Publication;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class PublicationRepository
 {
-    public function getAll(): Collection
+    public function count() : int
     {
-        return Publication::with(['user', 'comments'])->latest()->get();
+        return Publication::count();
+    }
+
+    public function getAll(User $user): Collection
+    {
+        $publications = Publication::with(['user', 'comments'])
+            ->withCount(['comments', 'bazes'])
+            ->latest()
+            ->get();
+
+        $publications->each(function ($publication) use ($user) {
+            $publication->likedByMe = $publication->bazes()
+                ->where('user_id', $user->id)
+                ->exists();
+        });
+
+        return $publications;
     }
 
     public function findById(int $id): ?Publication

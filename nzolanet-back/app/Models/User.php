@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,7 +19,7 @@ class User extends Authenticatable
         'privacidade',
         'role'
     ];
-    
+
     protected $hidden = [
         'password',
     ];
@@ -41,5 +42,10 @@ class User extends Authenticatable
     public function following()
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')->withTimestamps();
+    }
+
+    public function bazes()
+    {
+        return $this->hasMany(Baze::class);
     }
 }

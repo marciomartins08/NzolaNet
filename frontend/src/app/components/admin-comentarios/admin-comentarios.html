@@ -1,0 +1,32 @@
+<div class="space-y-4">
+  <h2 class="text-xl font-bold text-gray-900">Gestão de Comentários</h2>
+  <p class="text-sm text-gray-500 mt-1">{{totCometarios()}} comentários na plataforma</p>
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100">
+    @for(comment of comentarios(); track comment.id){
+      <div class=p-4>
+      <div class="flex items-start gap-3">
+         <img
+          src={{comment.userImg}}
+          alt={{comment.userName}}
+          class="w-6 h-6 rounded-full object-cover"
+        />
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm font-semibold text-gray-900">{{comment.userName}}</span>
+              <span class="text-xs text-gray-400">comentou em post de {{comment.pubUser()}}</span>
+              <span class="text-xs text-gray-400">· {{comment.data}}</span>
+            </div>
+            <button (click)="deletComment(comment.id)" class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v500h400v-500ZM360-240h80v-380h-80v380Zm160 0h80v-380h-80v380ZM280-720v500-500Z"/>
+                    </svg>
+            </button>
+          </div>
+          <p class="text-sm text-gray-700 mt-1">{{comment.texto}}</p>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

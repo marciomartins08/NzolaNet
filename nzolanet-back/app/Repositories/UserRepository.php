@@ -2,13 +2,40 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository
 {
-public function create(array $data): User
-{
-    return User::create($data);
-}
+
+    public function mostPublications() : Collection
+    {
+        return User::withCount(['publications','followers'])
+                ->having('publications_count', '>', 0)
+                ->orderByDesc('publications_count')
+                ->limit(4)
+                ->get();
+    }
+
+    public function countPublicationsAndFollowers(): Collection
+    {
+        return User::withCount(['publications','followers'])
+                ->get();
+    }
+
+    public function count() : int
+    {
+        return User::count();
+    }
+
+    public function create(array $data): User
+    {
+        return User::create($data);
+    }
+    public function delete(User $user) : void
+    {
+        $user->delete();
+    }
+
 
 public function findByEmail(string $email): ?User
 {

@@ -1,6 +1,8 @@
-import { Component, input, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, input } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { Router, RouterLink } from '@angular/router';
+export type ViewType = 'feed' | 'profile' | 'notifications' | 'admin';
+
 
 @Component({
   selector: 'app-header',
@@ -9,22 +11,33 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './header.css',
 })
 export class Header {
-  private apiService = inject(ApiService);
-  private router = inject(Router);
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
+  isAdmin!: boolean
   foco = input.required<string>();
 
-  sair() {
-    this.apiService.logout().subscribe({
-      next: () => {
-        localStorage.clear();
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        // even if api fails, clear and go to login
-        localStorage.clear();
-        this.router.navigate(['/login']);
+
+  onLogout(){
+    this.apiService.logout().subscribe(
+      {
+        next: () => {
+          localStorage.clear();
+          this.router.navigate(['/login']);
+        },
+        error: () => {
+          localStorage.clear();
+          this.router.navigate(['/login']);
+          this.cdr.detectChanges();
+        }
       }
-    });
+    )
+  }
+
+  hasRoute(route : string){
+    return this.router.url == route;
   }
 }
