@@ -14,6 +14,17 @@ class CommentRepository
             ->get();
     }
 
+    public function getAll() : Collection
+    {
+        return Comment::with(['user', 'publication'])
+                        ->get();
+    }
+
+    public function count()
+    {
+        return Comment::count();
+    }
+
     public function findById(int $id): ?Comment
     {
         return Comment::find($id);

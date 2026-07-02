@@ -17,7 +17,7 @@ class PublicationController extends Controller
         return response()->json($publications);
     }
 
-    public function userPublications(Request $request, $id): JsonResponse
+    public function userPublications(Request $request, int $id): JsonResponse
     {
         $publications = $this->publicationService->getUserPublications((int)$id);
         return response()->json($publications);
@@ -34,7 +34,7 @@ class PublicationController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
             $dto = PublicationDTO::fromRequest($request);
@@ -49,7 +49,7 @@ class PublicationController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
         try {
             $this->publicationService->deletePublication((int)$id, $request->user());
@@ -57,5 +57,22 @@ class PublicationController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 403);
         }
+    }
+
+    public function deletar(Request $request, int $id): JsonResponse
+    {
+        try {
+            $this->publicationService->deletePublicationAny($id);
+            return response()->json(['message' => 'Publicação apagada com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 403);
+        }
+    }
+
+    public function contar() : JsonResponse
+    {
+        return response()->json([
+            'count' => $this->publicationService->countPublications(),
+        ],200);
     }
 }

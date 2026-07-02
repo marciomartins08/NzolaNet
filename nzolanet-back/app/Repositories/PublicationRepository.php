@@ -6,9 +6,17 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PublicationRepository
 {
+    public function count() : int
+    {
+        return Publication::count();
+    }
+
     public function getAll(): Collection
     {
-        return Publication::with(['user', 'comments'])->latest()->get();
+        return Publication::with(['user', 'comments'])
+                            ->withCount(['comments'])
+                            ->latest()
+                            ->get();
     }
 
     public function findById(int $id): ?Publication

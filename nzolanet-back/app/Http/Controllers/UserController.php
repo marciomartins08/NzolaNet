@@ -11,6 +11,35 @@ class UserController extends Controller
 {
     public function __construct(protected UserService $userService) {}
 
+    public function contar() : JsonResponse
+    {
+        return response()->json([
+            'count' => $this->userService->countUsers(),
+        ], 200);
+    }
+
+    public function most() : JsonResponse
+    {
+        $arr = $this->userService->getUsersWithPublications();
+
+        return response()->json($arr,200);
+    }
+
+    public function mostrar() : JsonResponse
+    {
+        $arr = $this->userService->getUsers();
+        return response()->json($arr,200);
+    }
+    public function destroy(Request $request, int $id) : JsonResponse
+    {
+        try{
+            $this->userService->deleteUser($id);
+            return response()->json(['message' => 'User deletado com sucesso'], 200);
+        }catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()],403);
+        }
+    }
+
     public function index(Request $request): JsonResponse
     {
         $query = $request->query('search', '');

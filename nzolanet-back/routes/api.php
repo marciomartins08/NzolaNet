@@ -13,6 +13,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/publications', [PublicationController::class, 'index']);
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+Route::get('/comments/count', [CommentController::class, 'contar']);
+Route::get('/users/count', [UserController::class, 'contar']);
+Route::get('/publications/count', [PublicationController::class, 'contar']);
+Route::get('/users/most', [UserController::class, 'most']);
+Route::get('/users/show',[UserController::class, 'mostrar']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -25,16 +30,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{id}/publications', [PublicationController::class, 'userPublications']);
     Route::post('/users/{id}/follow', [UserController::class, 'follow']);
     Route::delete('/users/{id}/unfollow', [UserController::class, 'unfollow']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 
     Route::post('/publications', [PublicationController::class, 'store']);
     Route::put('/publications/{id}', [PublicationController::class, 'update']);
     Route::delete('/publications/{id}', [PublicationController::class, 'destroy']);
+    Route::delete('/publicationsany/{id}', [PublicationController::class, 'deletar']);
 
     Route::get('/publications/{publicationId}/comments', [CommentController::class, 'index']);
     Route::post('/publications/{publicationId}/comments', [CommentController::class, 'store']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+    Route::get('/comments/{id}', [CommentController::class, 'getComment']);
+    Route::get('/comments', [CommentController::class, 'listar']);
+    Route::delete('/comments/admin/{id}', [CommentController::class, 'deletar']);
 
 
     Route::post('/upload', [UploadController::class, 'upload']);

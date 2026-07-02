@@ -22,6 +22,11 @@ class PublicationService
         return $this->publicationRepository->getByUserId($userId);
     }
 
+    public function countPublications() : int
+    {
+        return $this->publicationRepository->count();
+    }
+
     public function createPublication(User $user, PublicationDTO $dto): Publication
     {
         return $this->publicationRepository->create([
@@ -63,6 +68,16 @@ class PublicationService
             throw new Exception("Não tens permissão para apagar esta publicação.");
         }
 
+        $this->publicationRepository->delete($publication);
+    }
+
+    public function deletePublicationAny(int $id): void
+    {
+        $publication = $this->publicationRepository->findById($id);
+
+        if (!$publication) {
+            throw new Exception("Publicação não encontrada.");
+        }
         $this->publicationRepository->delete($publication);
     }
 }
