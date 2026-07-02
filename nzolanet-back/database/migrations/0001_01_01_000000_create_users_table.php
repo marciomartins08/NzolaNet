@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('foto_perfil')->nullable(); 
+            $table->enum('role', ['admin', 'user'])->default('user');
             $table->enum('privacidade', ['publico', 'privado'])->default('publico'); 
             $table->timestamps();
         });

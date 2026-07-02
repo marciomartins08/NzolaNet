@@ -59,7 +59,7 @@ class PublicationService
             throw new Exception("Publicação não encontrada.");
         }
 
-        if ($publication->user_id !== $user->id) {
+        if ($publication->user_id !== $user->id && $user->role !== 'admin') {
             throw new Exception("Não tens permissão para apagar esta publicação.");
         }
 

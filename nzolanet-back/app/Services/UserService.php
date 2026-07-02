@@ -45,4 +45,14 @@ class UserService
     {
         $this->userRepository->unfollow($user, $targetUserId);
     }
+
+    public function promoteService(int $targetUserId): void
+    {
+        $this->userRepository->promoteRepository($targetUserId);
+    }
+
+    public function destroyService(User $user): void 
+    {
+        $this->userRepository->deleteUser($user);
+    }
 }

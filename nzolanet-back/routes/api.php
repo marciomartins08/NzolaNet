@@ -23,9 +23,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'showUser']);
     Route::get('/users/{id}/publications', [PublicationController::class, 'userPublications']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::post('/users/{id}/follow', [UserController::class, 'follow']);
     Route::delete('/users/{id}/unfollow', [UserController::class, 'unfollow']);
 
+    Route::middleware('check.admin')->group(function () {
+        Route::put('/users/{id}/promote', [UserController::class, 'promote']);
+    });
 
     Route::post('/publications', [PublicationController::class, 'store']);
     Route::put('/publications/{id}', [PublicationController::class, 'update']);

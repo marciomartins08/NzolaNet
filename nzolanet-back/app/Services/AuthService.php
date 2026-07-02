@@ -19,6 +19,7 @@ public function register(RegisterDTO $dto)
         'nome' => $dto->nome,
         'email' => $dto->email,
         'password' => Hash::make($dto->password),
+        'role' => 'user',
     ]);
 
     $token = $user->createToken('auth_token')->plainTextToken;

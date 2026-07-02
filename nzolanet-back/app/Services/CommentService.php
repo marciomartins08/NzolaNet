@@ -67,7 +67,7 @@ class CommentService
             throw new Exception("Comentário não encontrado.");
         }
 
-        if ($comment->user_id !== $user->id) {
+        if ($comment->user_id !== $user->id && $user->role !== 'admin') {
             throw new Exception("Não tens permissão para apagar este comentário.");
         }
 

@@ -9,6 +9,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call([
+            AdminUserSeeder::class,
+        ]);
         User::create([
             'nome' => 'Marcio Martins',
             'email' => 'marcio@nzolanet.com',

@@ -36,8 +36,25 @@ public function follow(User $user, int $targetUserId): void
     $user->following()->syncWithoutDetaching([$targetUserId]);
 }
 
+
+public function promoteRepository(int $targetUserId): void
+{
+    $user = $this->findById($targetUserId);
+    if ($user) {
+        $user->role = 'admin';
+        $user->save();
+    }
+
+}
+
 public function unfollow(User $user, int $targetUserId): void
 {
     $user->following()->detach($targetUserId);
+}
+
+public function deleteUser(User $user): void
+{
+    $user->delete();
+    
 }
 }

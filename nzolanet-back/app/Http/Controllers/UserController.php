@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\DTOs\UpdateProfileDTO;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
@@ -41,6 +42,16 @@ class UserController extends Controller
         }
     }
 
+    public function promote(Request $request, $id): JsonResponse
+    {
+        try {
+            $this->userService->promoteService($id);
+            return response()->json(['message'=> 'Usuario promovido para admin'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error'=> $e->getMessage()],404);
+        }
+    }
+
     public function update(Request $request): JsonResponse
     {
         $dto = UpdateProfileDTO::fromRequest($request);
@@ -50,6 +61,16 @@ class UserController extends Controller
             'message' => 'Perfil atualizado com sucesso!',
             'user' => $updatedUser
         ]);
+    }
+
+    public function destroy(Request $request, User $user): JsonResponse
+    {
+        try{
+            $this->userService->destroyService($user);
+                return response()->json(['message' => 'Usuario Apagado com sucesso.'], 200);
+        } catch(\Exception $e){
+            return response()->json(['message', $e->getMessage()],400);
+        }
     }
 
     public function follow(Request $request, $id): JsonResponse
