@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal } from '@angular/core';
+import { Component, input, output, inject, signal, Output, EventEmitter } from '@angular/core';
 import { Comentarios } from '../comentarios/comentarios';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,8 @@ export class Post {
     userEmail: string;
     userImg: string;
     date: Date;
-    likes: number;
+    bazes: number;
+    likedByMe: boolean;
   }>();
 
   deleted = output<void>();
@@ -88,6 +89,24 @@ export class Post {
     } else {
       return `Há ${segundos} segundo${segundos > 1 ? 's' : ''}`;
     }
+  }
+
+  @Output() liked = new EventEmitter<{ postId: number; liked: boolean }>();
+
+  darLike(postId: number) {
+    this.apiService.darLike(postId).subscribe({
+      next: () => {
+        this.liked.emit({ postId, liked: true });
+      }
+    });
+  }
+
+  tirarLike(postId: number) {
+    this.apiService.removerLike(postId).subscribe({
+      next: () => {
+        this.liked.emit({ postId, liked: false });
+      }
+    });
   }
 
 }

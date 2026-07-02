@@ -68,7 +68,7 @@ export class AdminPublicacoes implements OnInit{
       userEmail: pub.user?.email || '',
       userImg: pub.user?.foto_perfil || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
       data: this.formatDate(pub.created_at),
-      bazes : 0,
+      bazes : pub.bazes_count,
       comments: pub.comments_count
     }
   }

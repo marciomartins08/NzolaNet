@@ -138,4 +138,13 @@ export class ApiService {
   deleteUser(userId: number) : Observable<any>{
     return this.http.delete(`${this.baseUrl}/users/${userId}`);
   }
+
+
+  darLike(postId:number) : Observable<any>{
+    return this.http.post(`${this.baseUrl}/publications/${postId}/like`,{});
+  }
+
+  removerLike(postId:number) : Observable<any>{
+    return this.http.delete(`${this.baseUrl}/publications/${postId}/remove`);
+  }
 }

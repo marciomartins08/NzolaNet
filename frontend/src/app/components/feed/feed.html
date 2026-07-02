@@ -11,7 +11,8 @@
 
         <div >
             @for (item of publications(); track item.id) {
-                <app-post [dataPost]="item" (deleted)="carregarPublicacoes()"></app-post>
+                <app-post [dataPost]="item" (liked)="atualizarLike($event)"
+                    (deleted)="carregarPublicacoes()"> (deleted)="carregarPublicacoes()"></app-post>
             } @empty {
                  <div class="text-center py-12 bg-white rounded-xl border border-gray-200 mt-4 text-gray-500">
                     Nenhuma publicação no feed. Comece a seguir utilizadores ou crie a sua própria publicação!
