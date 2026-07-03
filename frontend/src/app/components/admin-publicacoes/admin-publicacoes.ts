@@ -26,7 +26,7 @@ export class AdminPublicacoes implements OnInit{
 
   deletePublication(publicationId: number){
     if(confirm('Tem certeza de que deseja apagar esta publicacao?'))
-    this.apiService.deletePublicationAny(publicationId).subscribe({
+    this.apiService.deletePublication(publicationId).subscribe({
       next : () => {
         this.carregarPublicacoes();
       },

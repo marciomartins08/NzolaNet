@@ -58,7 +58,7 @@ export class AdminComentarios implements OnInit{
 
   deletComment(commentId: number){
     if(confirm('Deseja deletar este comentario?'))
-    this.apiService.deleteCommentAdmin(commentId).subscribe({
+    this.apiService.deleteComment(commentId).subscribe({
       next: () => {
         this.carregarComentarios();
       },
