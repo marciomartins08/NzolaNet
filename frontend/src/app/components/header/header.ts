@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, input, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Router, RouterLink } from '@angular/router';
 export type ViewType = 'feed' | 'profile' | 'notifications' | 'admin';
@@ -10,15 +10,28 @@ export type ViewType = 'feed' | 'profile' | 'notifications' | 'admin';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {
+export class Header implements OnInit{
   constructor(
     private apiService: ApiService,
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {}
 
-  isAdmin!: boolean
+  ngOnInit(): void {
+    this.verAdmin();
+  }
+
+  isAdmin = signal(false);
   foco = input.required<string>();
+
+
+  verAdmin(){
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if(user?.role === 'admin'){
+      this.isAdmin.set(true);
+    }
+  }
+
 
 
   onLogout(){
