@@ -92,7 +92,6 @@ class UserController extends Controller
         ]);
     }
 
-
     public function follow(Request $request, $id): JsonResponse
     {
         try {
