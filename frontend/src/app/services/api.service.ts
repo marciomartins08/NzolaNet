@@ -139,6 +139,23 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/users/${userId}`);
   }
 
+  // Notifications
+  getNotifications(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/notifications`);
+  }
+
+  markNotificationAsRead(id: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/notifications/${id}/read`, {});
+  }
+
+  markAllNotificationsAsRead(): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/notifications/read-all`, {});
+  }
+
+  deleteNotification(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/notifications/${id}`);
+  }
+
 
   darLike(postId:number) : Observable<any>{
     return this.http.post(`${this.baseUrl}/publications/${postId}/like`,{});

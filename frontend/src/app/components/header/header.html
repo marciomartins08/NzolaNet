@@ -47,6 +47,9 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
                   <span class="hidden md:inline text-sm">Notificacoes</span>
+                  @if(unreadNotifications() > 0){
+                    <span class="notification-badge">{{ unreadNotifications() > 99 ? '99+' : unreadNotifications() }}</span>
+                  }
               </button>
             }@else{
               <button routerLink="/notifications" class="relative flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-100">
@@ -54,6 +57,9 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
                   <span class="hidden md:inline text-sm">Notificacoes</span>
+                  @if(unreadNotifications() > 0){
+                    <span class="notification-badge">{{ unreadNotifications() > 99 ? '99+' : unreadNotifications() }}</span>
+                  }
               </button>
             }
 

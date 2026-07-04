@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\DTOs\PublicationDTO;
 use App\Repositories\PublicationRepository;
+use App\Services\NotificationService;
 use App\Models\Publication;
 use App\Models\User;
 use Exception;
@@ -10,7 +11,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PublicationService
 {
-    public function __construct(protected PublicationRepository $publicationRepository) {}
+    public function __construct(
+        protected PublicationRepository $publicationRepository,
+        protected NotificationService $notificationService
+    ) {}
 
     public function getAllPublications(User $user): Collection
     {
@@ -29,12 +33,17 @@ class PublicationService
 
     public function createPublication(User $user, PublicationDTO $dto): Publication
     {
-        return $this->publicationRepository->create([
+        $publication = $this->publicationRepository->create([
             'user_id' => $user->id,
             'texto' => $dto->texto,
             'imagem' => $dto->imagem,
             'video' => $dto->video,
         ]);
+
+        $publication->loadMissing('user');
+        $this->notificationService->notifyFollowersAboutPublication($user, $publication);
+
+        return $publication;
     }
 
     public function updatePublication(int $id, User $user, PublicationDTO $dto): Publication

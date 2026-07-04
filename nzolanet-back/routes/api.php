@@ -8,6 +8,7 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\NotificationController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -54,6 +55,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/publications/{id}/like',[BazeController::class, 'store']);
     Route::delete('/publications/{id}/remove',[BazeController::class, 'destroy']);
     Route::get('/likes',[BazeController::class, 'index']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 
 
     Route::post('/upload', [UploadController::class, 'upload']);

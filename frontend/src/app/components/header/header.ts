@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, input, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectorRef, input, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { filter } from 'rxjs';
 export type ViewType = 'feed' | 'profile' | 'notifications' | 'admin';
 
 
@@ -19,9 +20,15 @@ export class Header implements OnInit{
 
   ngOnInit(): void {
     this.verAdmin();
+    this.loadNotificationCount();
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => this.loadNotificationCount());
   }
 
   isAdmin = signal(false);
+  unreadNotifications = signal(0);
   foco = input.required<string>();
 
 
@@ -30,6 +37,18 @@ export class Header implements OnInit{
     if(user?.role === 'admin'){
       this.isAdmin.set(true);
     }
+  }
+
+  loadNotificationCount(): void {
+    this.apiService.getNotifications().subscribe({
+      next: (response: any) => {
+        const unreadCount = Number(response?.unread_count ?? 0);
+        this.unreadNotifications.set(Number.isNaN(unreadCount) ? 0 : unreadCount);
+      },
+      error: () => {
+        this.unreadNotifications.set(0);
+      }
+    });
   }
 
 

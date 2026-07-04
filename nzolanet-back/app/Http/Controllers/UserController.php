@@ -92,15 +92,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, User $user): JsonResponse
-    {
-        try{
-            $this->userService->destroyService($user);
-                return response()->json(['message' => 'Usuario Apagado com sucesso.'], 200);
-        } catch(\Exception $e){
-            return response()->json(['message', $e->getMessage()],400);
-        }
-    }
 
     public function follow(Request $request, $id): JsonResponse
     {

@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
-    public function __construct(protected UserRepository $userRepository) {}
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected NotificationService $notificationService
+    ) {}
 
     public function getUsersWithPublications() : Collection
     {
@@ -61,6 +64,11 @@ class UserService
             throw new Exception("Não podes seguir-te a ti próprio.");
         }
         $this->userRepository->follow($user, $targetUserId);
+
+        $targetUser = $this->userRepository->findById($targetUserId);
+        if ($targetUser) {
+            $this->notificationService->notifyUserFollowed($user, $targetUser);
+        }
     }
 
     public function unfollowUser(User $user, int $targetUserId): void

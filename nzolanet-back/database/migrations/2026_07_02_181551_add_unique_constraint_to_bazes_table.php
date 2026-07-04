@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bazes', function (Blueprint $table) {
-            $table->unique(['user_id', 'publication_id']);
-        });
+        // The unique constraint already exists in the table creation migration.
     }
 
     public function down(): void
     {
-        Schema::table('bazes', function (Blueprint $table) {
-            $table->dropUnique(['user_id', 'publication_id']);
-            // ou:
-            // $table->dropUnique('bazes_user_id_publication_id_unique');
-        });
+        // No-op: nothing was added in up().
     }
 };

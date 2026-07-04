@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\User;
 use App\Repositories\CommentRepository;
 use App\Repositories\PublicationRepository;
+use App\Services\NotificationService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -13,7 +14,8 @@ class CommentService
 {
     public function __construct(
         protected CommentRepository $commentRepository,
-        protected PublicationRepository $publicationRepository
+        protected PublicationRepository $publicationRepository,
+        protected NotificationService $notificationService
     ) {}
 
     public function getCommentsByPublication(int $publicationId): Collection
@@ -51,11 +53,15 @@ class CommentService
             throw new Exception("Publicação não encontrada.");
         }
 
-        return $this->commentRepository->create([
+        $comment = $this->commentRepository->create([
             'user_id' => $user->id,
             'publication_id' => $publicationId,
             'texto' => $dto->texto,
         ]);
+
+        $this->notificationService->notifyPublicationOwnerAboutComment($user, $publication, $comment->id);
+
+        return $comment;
     }
 
     public function updateComment(int $id, User $user, CommentDTO $dto): Comment

@@ -1,1 +1,61 @@
-<p>notifications works!</p>
+<section class="notifications-shell">
+	<header class="notifications-hero">
+		<div>
+			<p class="eyebrow">Centro de atividade</p>
+			<h1>Notificações</h1>
+			<p class="subtitle">Acompanha likes, comentários, novas publicações e seguidores em um só lugar.</p>
+		</div>
+
+		<div class="hero-actions">
+			<button class="ghost-btn" (click)="setFilter('all')" [class.active]="filter() === 'all'">Todas</button>
+			<button class="ghost-btn" (click)="setFilter('unread')" [class.active]="filter() === 'unread'">
+				Não lidas <span class="count">{{ unreadCount }}</span>
+			</button>
+			<button class="primary-btn" (click)="markAllAsRead()">Marcar todas como lidas</button>
+		</div>
+	</header>
+
+	@if (loading()) {
+		<div class="loading-card">
+			<div class="spinner"></div>
+			<p>A carregar notificações...</p>
+		</div>
+	} @else {
+		<div class="notifications-list">
+			@for (notification of visibleNotifications; track notification.id) {
+				<article class="notification-card" [class.unread]="!notification.read">
+					<div class="icon-badge">{{ iconFor(notification.type) }}</div>
+
+					<img class="avatar" [src]="notification.actorAvatar" [alt]="notification.actorName">
+
+					<div class="content" (click)="markAsRead(notification)">
+						<div class="top-line">
+							<div>
+								<p class="title">{{ notification.title }}</p>
+								<p class="meta">
+									{{ notification.actorName }} • {{ typeLabel(notification.type) }} • {{ notification.createdAt | date:'short' }}
+								</p>
+							</div>
+
+							@if (!notification.read) {
+								<span class="dot"></span>
+							}
+						</div>
+
+						<p class="message">{{ notification.message }}</p>
+					</div>
+
+					<div class="card-actions">
+						<button class="link-btn" (click)="markAsRead(notification); $event.stopPropagation()">Abrir</button>
+						<button class="delete-btn" (click)="deleteNotification(notification.id); $event.stopPropagation()">Remover</button>
+					</div>
+				</article>
+			} @empty {
+				<div class="empty-state">
+					<h2>Sem notificações</h2>
+					<p>Quando alguém curtir, comentar, publicar ou seguir-te, vais ver tudo aqui.</p>
+				</div>
+			}
+		</div>
+	}
+</section>
