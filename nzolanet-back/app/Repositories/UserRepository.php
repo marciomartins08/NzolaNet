@@ -54,7 +54,7 @@ public function search(string $query)
 
 public function update(User $user, array $data): User
 {
-    $user->update(array_filter($data)); 
+    $user->update(array_filter($data));
     return $user;
 }
 
@@ -82,6 +82,6 @@ public function unfollow(User $user, int $targetUserId): void
 public function deleteUser(User $user): void
 {
     $user->delete();
-    
+
 }
 }
